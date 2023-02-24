@@ -514,6 +514,13 @@ func (s *Service) getSecurityGroupIngressRules(role infrav1.SecurityGroupRole) (
 				ToPort:                 2380,
 				SourceSecurityGroupIDs: []string{s.scope.SecurityGroups()[infrav1.SecurityGroupControlPlane].ID},
 			},
+			{
+				Description:            "RKE2 registration",
+				Protocol:               infrav1.SecurityGroupProtocolTCP,
+				FromPort:               9345,
+				ToPort:                 9345,
+				SourceSecurityGroupIDs: []string{s.scope.SecurityGroups()[infrav1.SecurityGroupNode].ID},
+			},
 		}
 		if s.scope.Bastion().Enabled {
 			rules = append(rules, s.defaultSSHIngressRule(s.scope.SecurityGroups()[infrav1.SecurityGroupBastion].ID))
